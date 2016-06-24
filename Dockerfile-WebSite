@@ -1,0 +1,14 @@
+FROM node:4.2
+
+ENV EMBER_ENV docker
+
+COPY UmaManagerWebSite /app
+
+WORKDIR /app
+
+RUN npm install -g bower ember-cli
+RUN bower --allow-root install
+
+EXPOSE 4200
+
+CMD [ "ember", "server" ]

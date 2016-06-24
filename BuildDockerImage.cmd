@@ -2,6 +2,7 @@
 docker build -t simpleidserver -f Dockerfile-Authorization .
 docker build -t uma -f Dockerfile-Uma .
 docker build -t websiteapi -f Dockerfile-WebSiteApi .
+docker build -t website -f Dockerfile-WebSite .
 
 # Run postgresql
 docker run --name postgresql -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=password -e POSTGRES_DB=postgres -d postgres
