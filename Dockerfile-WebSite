@@ -8,6 +8,7 @@ WORKDIR /app
 
 RUN npm install -g bower ember-cli
 RUN bower --allow-root install
+RUN npm install
 
 EXPOSE 4200
 
