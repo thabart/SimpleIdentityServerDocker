@@ -1,0 +1,17 @@
+FROM node:argon
+
+ENV OPENID_CONFIGURATION_URL http://simpleidserver:5000/.well-known/openid-configuration
+ENV UMA_CONFIGURATION_URL http://uma:5001/.well-known/uma-configuration
+ENV MANAGER_URL http://manager:5002/api
+ENV CONFIGURATION_URL http://configuration:5004/configuration
+ENV DB mongodb://mongo:27017/test
+
+COPY UmaManagerWebSiteApi /app
+
+WORKDIR /app
+
+RUN npm install
+
+EXPOSE 8080
+
+CMD ["node", "server-api.js"]

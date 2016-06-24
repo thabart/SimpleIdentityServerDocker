@@ -61,6 +61,20 @@ services:
   environment:
    - DB_ALIAS=postgresql
    - DB_PORT=5432
+ websiteapi:
+  build:
+   dockerfile: Dockerfile-WebSiteApi
+   context: .
+  ports:
+   - "8080:8080"
+  links:
+   - "ambassador:simpleidserver"
+   - uma:uma
+   - manager:manager
+   - configuration:configuration
+   - mongo:mongo
+  depends_on:
+   - "mongo"
  postgresql:
   image: postgres
   environment:
@@ -79,3 +93,5 @@ services:
    - POSTGRES_USER=postgres
    - POSTGRES_PASSWORD=password
    - POSTGRES_DB=postgres
+ mongo:
+  image: mongo

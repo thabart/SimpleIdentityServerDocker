@@ -6,3 +6,7 @@
 	path = UmaManagerWebSite
 	url = https://github.com/thabart/UmaManagerWebSite.git
 	branch = master
+[submodule "UmaManagerWebSiteApi"]
+	path = UmaManagerWebSiteApi
+	url = https://github.com/thabart/UmaManagerWebSiteApi.git
+	branch = master

@@ -8,6 +8,8 @@ COPY SimpleIdentityServer/SimpleIdentityServer/src /app
 
 WORKDIR /app
 
+RUN sed -i 's/\r//' /app/simpleidserver-entrypoint.sh
+RUN sed -i 's/\r//' /app/wait-for-it.sh
 RUN chmod +x /app/simpleidserver-entrypoint.sh && chmod +x /app/wait-for-it.sh
 RUN dotnet restore
 
