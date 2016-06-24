@@ -1,0 +1,8 @@
+[submodule "SimpleIdentityServer"]
+	path = SimpleIdentityServer
+	url = https://github.com/thabart/SimpleIdentityServer.git
+	branch = master
+[submodule "UmaManagerWebSite"]
+	path = UmaManagerWebSite
+	url = https://github.com/thabart/UmaManagerWebSite.git
+	branch = master
