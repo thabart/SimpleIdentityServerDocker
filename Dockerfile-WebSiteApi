@@ -1,7 +1,7 @@
 FROM node:argon
 
-ENV OPENID_CONFIGURATION_URL http://simpleidserver:5000/.well-known/openid-configuration
-ENV UMA_CONFIGURATION_URL http://uma:5001/.well-known/uma-configuration
+ENV OPENID_CONFIGURATION_URL http://simpleidserver:5443/.well-known/openid-configuration
+ENV UMA_CONFIGURATION_URL http://uma:5445/.well-known/uma-configuration
 ENV MANAGER_URL http://manager:5002/api
 ENV CONFIGURATION_URL http://configuration:5004/configuration
 ENV DB mongodb://mongo:27017/test
@@ -10,8 +10,14 @@ COPY UmaManagerWebSiteApi /app
 
 WORKDIR /app
 
+RUN apt-get update -y && \
+    apt-get install ca-certificates -y
+ADD LokitCA.crt /usr/local/share/ca-certificates/LokitCA.crt
+RUN sed -i 's/\r//' /app/run.sh
+RUN chmod +x /app/run.sh
+RUN update-ca-certificates --verbose
 RUN npm install
 
-EXPOSE 8080
+EXPOSE 5444
 
-CMD ["node", "server-api.js"]
+ENTRYPOINT ["/app/run.sh"]

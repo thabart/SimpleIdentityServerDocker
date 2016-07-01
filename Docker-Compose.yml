@@ -10,7 +10,7 @@ services:
    dockerfile: Dockerfile-Authorization
    context: .
   ports:
-   - "5000:5000"
+   - "5443:5443"
   links:
    - postgresql
    - configuration
@@ -24,7 +24,7 @@ services:
    dockerfile: Dockerfile-Uma
    context: .
   ports:
-   - "5001:5001"
+   - "5445:5445"
   links:
    - postgresql_uma:postgresql
    - "ambassador:simpleidserver"
@@ -37,8 +37,6 @@ services:
   build:
    dockerfile: Dockerfile-Manager
    context: .
-  ports:
-   - "5002:5002"
   links:
    - postgresql
    - "ambassador:simpleidserver"
@@ -51,8 +49,6 @@ services:
   build:
    dockerfile: Docker-Configuration
    context: .
-  ports:
-   - "5004:5004"
   links:
    - postgresql_configuration:postgresql
    - "ambassador:simpleidserver"
@@ -61,12 +57,21 @@ services:
   environment:
    - DB_ALIAS=postgresql
    - DB_PORT=5432
+ website:
+  build:
+   dockerfile: Dockerfile-WebSite
+   context: .
+  ports:
+   - "4200:4200"
+  links:
+   - "ambassador:simpleidserver"   
+   - uma:uma
  websiteapi:
   build:
    dockerfile: Dockerfile-WebSiteApi
    context: .
   ports:
-   - "8080:8080"
+   - "5444:5444"
   links:
    - "ambassador:simpleidserver"
    - uma:uma
