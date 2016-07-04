@@ -26,6 +26,7 @@ services:
   links:
    - postgresql
    - configuration
+   - "ambassador:simpleidserver"
   depends_on:
    - "postgresql"
   environment:
