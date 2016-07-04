@@ -3,6 +3,8 @@ docker build -t simpleidserver -f Dockerfile-Authorization .
 docker build -t uma -f Dockerfile-Uma .
 docker build -t websiteapi -f Dockerfile-WebSiteApi .
 docker build -t website -f Dockerfile-WebSite .
+docker build -t configuration -f Docker-Configuration .
+docker build -t simpleidserver -f Dockerfile-Authorization-Https .
 
 # delete all images
 docker rm -f $(docker ps -aq)

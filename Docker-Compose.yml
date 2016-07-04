@@ -9,6 +9,18 @@ services:
   build:
    dockerfile: Dockerfile-Authorization
    context: .
+  links:
+   - postgresql
+   - configuration
+  depends_on:
+   - "postgresql"
+  environment:
+   - DB_ALIAS=postgresql
+   - DB_PORT=5432
+ simpleidserver_https:
+  build:
+   dockerfile: Dockerfile-Authorization-Https
+   context: .
   ports:
    - "5443:5443"
   links:
@@ -22,6 +34,18 @@ services:
  uma:
   build:
    dockerfile: Dockerfile-Uma
+   context: .
+  links:
+   - postgresql_uma:postgresql
+   - "ambassador:simpleidserver"
+  depends_on:
+   - "postgresql_uma"
+  environment:
+   - DB_ALIAS=postgresql
+   - DB_PORT=5432
+ uma_https:
+  build:
+   dockerfile: Dockerfile-Uma-Https
    context: .
   ports:
    - "5445:5445"

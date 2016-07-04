@@ -8,9 +8,11 @@ COPY SimpleIdentityServer/SimpleIdentityServer/src /app
 
 WORKDIR /app
 
-RUN sed -i 's/\r//' /app/manager-entrypoint.sh
+RUN sed -i 's/\r//' /app/uma-https-entrypoint.sh
 RUN sed -i 's/\r//' /app/wait-for-it.sh
-RUN chmod +x /app/manager-entrypoint.sh && chmod +x /app/wait-for-it.sh
+RUN chmod +x /app/uma-https-entrypoint.sh && chmod +x /app/wait-for-it.sh
 RUN dotnet restore
 
-ENTRYPOINT ["/app/manager-entrypoint.sh"]
+EXPOSE 5445
+
+ENTRYPOINT ["/app/uma-https-entrypoint.sh"]

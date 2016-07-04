@@ -4,10 +4,6 @@ COPY UmaManagerWebSite /app
 
 WORKDIR /app
 
-RUN apt-get update -y && \
-    apt-get install ca-certificates -y
-ADD LokitCA.crt /usr/local/share/ca-certificates/LokitCA.crt
-RUN update-ca-certificates --verbose
 RUN npm install -g bower ember-cli
 RUN bower --allow-root install
 RUN npm install

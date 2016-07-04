@@ -8,15 +8,9 @@ COPY SimpleIdentityServer/SimpleIdentityServer/src /app
 
 WORKDIR /app
 
-RUN apt-get update -y && \
-    apt-get install ca-certificates -y
-ADD LokitCA.crt /usr/local/share/ca-certificates/LokitCA.crt
-RUN sed -i 's/\r//' /app/uma-entrypoint.sh
+RUN sed -i 's/\r//' /app/uma-http-entrypoint.sh
 RUN sed -i 's/\r//' /app/wait-for-it.sh
-RUN chmod +x /app/uma-entrypoint.sh && chmod +x /app/wait-for-it.sh
-RUN update-ca-certificates --verbose
+RUN chmod +x /app/uma-http-entrypoint.sh && chmod +x /app/wait-for-it.sh
 RUN dotnet restore
 
-EXPOSE 5445
-
-ENTRYPOINT ["/app/uma-entrypoint.sh"]
+ENTRYPOINT ["/app/uma-http-entrypoint.sh"]

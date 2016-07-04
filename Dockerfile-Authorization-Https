@@ -1,0 +1,18 @@
+FROM microsoft/dotnet:latest
+
+ENV ASPNETCORE_ENVIRONMENT docker
+ENV DB_ALIAS postgresql
+ENV DB_PORT 5432
+
+COPY SimpleIdentityServer/SimpleIdentityServer/src /app
+
+WORKDIR /app
+
+RUN sed -i 's/\r//' /app/simpleidserver-https-entrypoint.sh
+RUN sed -i 's/\r//' /app/wait-for-it.sh
+RUN chmod +x /app/simpleidserver-https-entrypoint.sh && chmod +x /app/wait-for-it.sh
+# RUN dotnet restore
+
+EXPOSE 5443
+
+ENTRYPOINT ["/app/simpleidserver-https-entrypoint.sh"]
