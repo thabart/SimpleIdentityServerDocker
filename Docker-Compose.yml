@@ -12,6 +12,7 @@ services:
   links:
    - postgresql
    - configuration
+   - elasticsearch
   depends_on:
    - "postgresql"
   environment:
@@ -27,6 +28,7 @@ services:
    - postgresql
    - configuration
    - "ambassador:simpleidserver"
+   - elasticsearch
   depends_on:
    - "postgresql"
   environment:
@@ -125,3 +127,13 @@ services:
    - POSTGRES_DB=postgres
  mongo:
   image: mongo
+ elasticsearch:
+  image: elasticsearch
+  ports:
+   - 9200:9200
+ kibana:
+  image: kibana
+  ports:
+   - 5601:5601
+  environment:
+   - ELASTICSEARCH_URL=http://elasticsearch:9200
