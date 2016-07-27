@@ -3,6 +3,7 @@ FROM microsoft/dotnet:latest
 ENV ASPNETCORE_ENVIRONMENT docker
 ENV DB_ALIAS postgresql
 ENV DB_PORT 5432
+ENV DATA_MIGRATED true
 
 COPY SimpleIdentityServer/SimpleIdentityServer/src /app
 

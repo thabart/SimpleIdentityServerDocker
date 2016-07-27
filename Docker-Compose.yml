@@ -7,19 +7,6 @@ services:
   command: "-name docker_simpleidserver_1"
  simpleidserver:
   build:
-   dockerfile: Dockerfile-Authorization
-   context: .
-  links:
-   - postgresql
-   - configuration
-   - elasticsearch
-  depends_on:
-   - "postgresql"
-  environment:
-   - DB_ALIAS=postgresql
-   - DB_PORT=5432
- simpleidserver_https:
-  build:
    dockerfile: Dockerfile-Authorization-Https
    context: .
   ports:
@@ -35,18 +22,6 @@ services:
    - DB_ALIAS=postgresql
    - DB_PORT=5432
  uma:
-  build:
-   dockerfile: Dockerfile-Uma
-   context: .
-  links:
-   - postgresql_uma:postgresql
-   - "ambassador:simpleidserver"
-  depends_on:
-   - "postgresql_uma"
-  environment:
-   - DB_ALIAS=postgresql
-   - DB_PORT=5432
- uma_https:
   build:
    dockerfile: Dockerfile-Uma-Https
    context: .
