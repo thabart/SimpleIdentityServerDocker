@@ -1,5 +1,13 @@
 version: '2'
 services:
+ lb:
+  image: dockercloud/haproxy
+  ports:
+   - "4200:80"
+  links:
+   - "website"
+  volumes:
+   - /var/run/docker.sock:/var/run/docker.sock
  ambassador:
   image: cpuguy83/docker-grand-ambassador
   volumes:
@@ -64,7 +72,7 @@ services:
    dockerfile: Dockerfile-WebSite
    context: .
   ports:
-   - "4200:4200"
+   - "4200"
   links:
    - "ambassador:simpleidserver"   
    - uma:uma
