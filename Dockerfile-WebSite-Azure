@@ -1,0 +1,16 @@
+FROM node:4.2
+
+ENV DEPLOY_TARGET azure
+
+COPY UmaManagerWebSite /app
+
+WORKDIR /app
+
+RUN npm install -g bower ember-cli
+RUN npm -g install npm@latest 
+RUN bower --allow-root install
+RUN npm install
+
+EXPOSE 4200
+
+CMD [ "ember", "server" ]

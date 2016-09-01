@@ -5,6 +5,7 @@ docker build -t websiteapi -f Dockerfile-WebSiteApi .
 docker build -t website -f Dockerfile-WebSite .
 docker build -t configuration -f Docker-Configuration .
 docker build -t simpleidserver -f Dockerfile-Authorization-Https .
+docker build -t marketing -f Dockerfile-Marketing .
 
 # delete all images
 docker rm -f $(docker ps -aq)

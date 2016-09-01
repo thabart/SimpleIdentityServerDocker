@@ -1,0 +1,1 @@
+docker-compose -f Docker-Compose-Azure.yml up

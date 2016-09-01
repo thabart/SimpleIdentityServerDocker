@@ -61,7 +61,7 @@ services:
    - DB_PORT=5432
  website:
   build:
-   dockerfile: Dockerfile-WebSite
+   dockerfile: Dockerfile-WebSite-Azure
    context: .
   ports:
    - "4200:4200"
