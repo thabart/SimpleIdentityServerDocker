@@ -30,8 +30,10 @@ services:
   links:
    - postgresql_uma:postgresql
    - "ambassador:simpleidserver"
+   - elasticsearch
   depends_on:
    - "postgresql_uma"
+   - elasticsearch
   environment:
    - DB_ALIAS=postgresql
    - DB_PORT=5432
@@ -42,8 +44,10 @@ services:
   links:
    - postgresql
    - "ambassador:simpleidserver"
+   - elasticsearch
   depends_on:
    - "postgresql"
+   - elasticsearch
   environment:
    - DB_ALIAS=postgresql
    - DB_PORT=5432
@@ -54,8 +58,10 @@ services:
   links:
    - postgresql_configuration:postgresql
    - "ambassador:simpleidserver"
+   - elasticsearch
   depends_on:
    - "postgresql_configuration"
+   - elasticsearch
   environment:
    - DB_ALIAS=postgresql
    - DB_PORT=5432
