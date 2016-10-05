@@ -1,5 +1,9 @@
 version: '2'
 services:
+ redis:
+  image: redis
+  ports:
+    - "6379:6379"
  ambassador:
   image: cpuguy83/docker-grand-ambassador
   volumes:
@@ -7,7 +11,7 @@ services:
   command: "-name docker_simpleidserver_1"
  simpleidserver:
   build:
-   dockerfile: Dockerfile-Authorization-Https
+   dockerfile: Dockerfile-IdServer
    context: .
   ports:
    - "5443:5443"
@@ -16,6 +20,7 @@ services:
    - configuration
    - "ambassador:simpleidserver"
    - elasticsearch
+   - redis
   depends_on:
    - "postgresql"
   environment:
@@ -23,7 +28,7 @@ services:
    - DB_PORT=5432
  uma:
   build:
-   dockerfile: Dockerfile-Uma-Https
+   dockerfile: Dockerfile-Uma-IdServer-Https
    context: .
   ports:
    - "5445:5445"
@@ -31,6 +36,7 @@ services:
    - postgresql_uma:postgresql
    - "ambassador:simpleidserver"
    - elasticsearch
+   - redis
   depends_on:
    - "postgresql_uma"
    - elasticsearch
@@ -39,12 +45,13 @@ services:
    - DB_PORT=5432
  manager:
   build:
-   dockerfile: Dockerfile-Manager
+   dockerfile: Dockerfile-Manager-IdServer
    context: .
   links:
    - postgresql
    - "ambassador:simpleidserver"
    - elasticsearch
+   - redis
   depends_on:
    - "postgresql"
    - elasticsearch
@@ -53,12 +60,14 @@ services:
    - DB_PORT=5432
  configuration:
   build:
-   dockerfile: Docker-Configuration
+   dockerfile: Dockerfile-Configuration-IdServer
    context: .
   links:
    - postgresql_configuration:postgresql
    - "ambassador:simpleidserver"
    - elasticsearch
+   - redis
+   - postgresql:postgresql_idserver
   depends_on:
    - "postgresql_configuration"
    - elasticsearch
@@ -67,13 +76,15 @@ services:
    - DB_PORT=5432
  website:
   build:
-   dockerfile: Dockerfile-WebSite-Azure
+   dockerfile: Dockerfile-WebSite
    context: .
   ports:
    - "4200:4200"
   links:
    - "ambassador:simpleidserver"   
    - uma:uma
+  environment:
+   - SERVER=idserver
  websiteapi:
   build:
    dockerfile: Dockerfile-WebSiteApi
@@ -88,12 +99,9 @@ services:
    - mongo:mongo
   depends_on:
    - "mongo"
- marketing:
-  build:
-   dockerfile: Dockerfile-Marketing
-   context: .
-  ports:
-   - "80:80"
+  environment:
+   - INTROSPECTION_CLIENT_ID=website_api
+   - INTROSPECTION_CLIENT_SECRET=website_api
  postgresql:
   image: postgres
   environment:

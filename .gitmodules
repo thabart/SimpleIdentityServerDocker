@@ -10,7 +10,3 @@
 	path = UmaManagerWebSiteApi
 	url = https://github.com/thabart/UmaManagerWebSiteApi.git
 	branch = master
-[submodule "SimpleIdentityServerMarketing"]
-	path = SimpleIdentityServerMarketing
-	url = https://github.com/thabart/SimpleIdentityServerMarketing.git
-	branch = master

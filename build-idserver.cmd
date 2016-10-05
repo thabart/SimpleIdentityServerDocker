@@ -1,0 +1,1 @@
+docker-compose -f Docker-Compose-IdServer.yml up
