@@ -43,6 +43,8 @@ services:
   environment:
    - DB_ALIAS=postgresql
    - DB_PORT=5432
+   - ASPNETCORE_ENVIRONMENT=docker
+   - DATA_MIGRATED=true
  manager:
   build:
    dockerfile: Dockerfile-Manager

@@ -28,7 +28,7 @@ services:
    - DB_PORT=5432
  uma:
   build:
-   dockerfile: Dockerfile-Uma-IdServer-Https
+   dockerfile: Dockerfile-Uma-Https
    context: .
   ports:
    - "5445:5445"
@@ -43,6 +43,8 @@ services:
   environment:
    - DB_ALIAS=postgresql
    - DB_PORT=5432
+   - ASPNETCORE_ENVIRONMENT=idserver_docker
+   - DATA_MIGRATED=true
  manager:
   build:
    dockerfile: Dockerfile-Manager-IdServer
