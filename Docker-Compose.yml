@@ -103,6 +103,7 @@ services:
   environment:
    - INTROSPECTION_CLIENT_ID=Anonymous
    - INTROSPECTION_CLIENT_SECRET=Anonymous
+   - OPENID_CONFIGURATION_URL=https://simpleidserver:5443/.well-known/openid-configuration
  postgresql:
   image: postgres
   environment:

@@ -1,6 +1,5 @@
 FROM node:argon
 
-ENV OPENID_CONFIGURATION_URL https://simpleidserver:5443/.well-known/openid-configuration
 ENV UMA_CONFIGURATION_URL https://uma:5445/.well-known/uma-configuration
 ENV MANAGER_URL http://manager:5002/api
 ENV CONFIGURATION_URL http://configuration:5004/configuration

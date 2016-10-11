@@ -8,7 +8,7 @@ services:
   image: cpuguy83/docker-grand-ambassador
   volumes:
    - "/var/run/docker.sock:/docker.sock"
-  command: "-name docker_idserver_1"
+  command: "-name idserver_1"
  idserver:
   build:
    dockerfile: Dockerfile-IdServer
@@ -18,7 +18,7 @@ services:
   links:
    - postgresql_idserver:postgresql
    - configuration_idserver:configuration
-   - "ambassador_idserver:simpleidserver"
+   - ambassador_idserver:idserver
    - elasticsearch_idserver:elasticsearch
    - redis_idserver:redis
   depends_on:
@@ -34,7 +34,7 @@ services:
    - "5445:5445"
   links:
    - postgresql_uma_idserver:postgresql
-   - "ambassador_idserver:simpleidserver"
+   - ambassador_idserver:idserver
    - elasticsearch_idserver:elasticsearch
    - redis_idserver:redis
   depends_on:
@@ -51,7 +51,7 @@ services:
    context: .
   links:
    - postgresql_idserver:postgresql
-   - "ambassador_idserver:simpleidserver"
+   - ambassador_idserver:idserver
    - elasticsearch_idserver:elasticsearch
    - redis_idserver:redis
   depends_on:
@@ -66,7 +66,7 @@ services:
    context: .
   links:
    - postgresql_configuration_idserver:postgresql
-   - "ambassador_idserver:simpleidserver"
+   - ambassador_idserver:idserver
    - elasticsearch_idserver:elasticsearch
    - redis_idserver:redis
    - postgresql_idserver:postgresql_idserver
@@ -83,7 +83,7 @@ services:
   ports:
    - "4200:4200"
   links:
-   - "ambassador_idserver:simpleidserver"   
+   - ambassador_idserver:idserver  
    - uma_idserver:uma
   environment:
    - SERVER=idserver
@@ -94,7 +94,7 @@ services:
   ports:
    - "5444:5444"
   links:
-   - "ambassador_idserver:simpleidserver"
+   - ambassador_idserver:idserver
    - uma_idserver:uma
    - manager_idserver:manager
    - configuration_idserver:configuration
@@ -104,6 +104,7 @@ services:
   environment:
    - INTROSPECTION_CLIENT_ID=website_api
    - INTROSPECTION_CLIENT_SECRET=website_api
+   - OPENID_CONFIGURATION_URL=https://idserver:5443/.well-known/openid-configuration
  postgresql_idserver:
   image: postgres
   environment:
