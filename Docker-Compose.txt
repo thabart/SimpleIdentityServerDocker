@@ -1,0 +1,25 @@
+-- Configure SWARM
+docker-machine create -d virtualbox --virtualbox-memory "2000" --engine-opt="label=com.function=consul"  keystore
+export DOCKER_TLS_VERIFY="1"
+export DOCKER_HOST="tcp://192.168.99.101:2376"
+export DOCKER_CERT_PATH="C:\Users\thabart\.docker\machine\machines\keystore"
+export DOCKER_MACHINE_NAME="keystore"
+docker run --restart=unless-stopped -d -p 8500:8500 -h consul progrium/consul -server -bootstrap
+docker-machine ip keystore
+docker-machine create -d virtualbox --virtualbox-memory "2000" --engine-opt="label=com.function=manager" --engine-opt="cluster-store=consul://192.168.99.101:8500" --engine-opt="cluster-advertise=eth1:2376" manager
+export DOCKER_TLS_VERIFY="1"
+export DOCKER_HOST="tcp://192.168.99.102:2376"
+export DOCKER_CERT_PATH="C:\Users\thabart\.docker\machine\machines\manager"
+export DOCKER_MACHINE_NAME="manager"
+docker run --restart=unless-stopped -d -p 3376:2375 -v /var/lib/boot2docker:/certs:ro swarm manage --tlsverify --tlscacert=/certs/ca.pem --tlscert=/certs/server.pem --tlskey=/certs/server-key.pem consul://192.168.99.101:8500
+docker-machine create -d virtualbox --virtualbox-memory "2000" --engine-opt="label=com.function=interlock" loadbalancer
+export DOCKER_TLS_VERIFY="1"
+export DOCKER_HOST="tcp://192.168.99.103:2376"
+export DOCKER_CERT_PATH="C:\Users\thabart\.docker\machine\machines\loadbalancer"
+export DOCKER_MACHINE_NAME="loadbalancer"
+docker run -P -d -ti -v nginx:/etc/conf -v /var/lib/boot2docker:/var/lib/boot2docker:ro -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/config/config.toml:/etc/config.toml --name interlock ehazlett/interlock:1.0.1 -D run -c /etc/config.toml
+docker run -ti -d -p 80:80 --label interlock.ext.name=nginx --link=interlock:interlock -v nginx:/etc/conf --name nginx nginx nginx -g "daemon off;" -c /etc/conf/nginx.conf
+-- Add HOST(node)
+docker-machine create -d virtualbox --virtualbox-memory "2000" --engine-opt="label=com.function=frontend01" --engine-opt="cluster-store=consul://$(docker-machine ip keystore):8500" --engine-opt="cluster-advertise=eth1:2376" frontend01
+eval $(docker-machine env frontend01)
+docker run -d swarm join --addr=$(docker-machine ip frontend01):2376 consul://$(docker-machine ip keystore):8500
